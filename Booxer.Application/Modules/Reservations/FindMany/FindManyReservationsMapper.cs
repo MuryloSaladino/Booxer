@@ -7,7 +7,7 @@ public class FindManyReservationsMapper : Profile
 {
     public FindManyReservationsMapper()
     {
-        CreateMap<Reservation, FindManyReservationResponse>()
+        CreateMap<Reservation, FindManyReservationsResponse>()
             .ForMember(dest => dest.ReservedBy, opt => opt.MapFrom(src => src.ReservedBy.Username));
     }
 }

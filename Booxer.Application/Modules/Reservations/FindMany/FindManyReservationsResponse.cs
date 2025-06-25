@@ -2,7 +2,7 @@ using Booxer.Domain.Entities;
 
 namespace Booxer.Application.Modules.Reservations.FindMany;
 
-public sealed record FindManyReservationResponse(
+public sealed record FindManyReservationsResponse(
     Guid Id,
     DateTime CreatedAt,
     DateTime UpdatedAt,

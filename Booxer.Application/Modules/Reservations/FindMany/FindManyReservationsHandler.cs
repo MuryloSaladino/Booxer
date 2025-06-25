@@ -7,13 +7,13 @@ namespace Booxer.Application.Modules.Reservations.FindMany;
 public class FindManyReservationsHandler(
     IReservationsRepository reservationsRepository,
     IMapper mapper
-) : IRequestHandler<FindManyReservationsRequest, List<FindManyReservationResponse>>
+) : IRequestHandler<FindManyReservationsRequest, List<FindManyReservationsResponse>>
 {
-    public async Task<List<FindManyReservationResponse>> Handle(
+    public async Task<List<FindManyReservationsResponse>> Handle(
         FindManyReservationsRequest request, CancellationToken cancellationToken)
     {
         var reservations = await reservationsRepository.FindMany(request, cancellationToken);
 
-        return mapper.Map<List<FindManyReservationResponse>>(reservations);
+        return mapper.Map<List<FindManyReservationsResponse>>(reservations);
     }
 }

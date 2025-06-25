@@ -6,4 +6,4 @@ namespace Booxer.Application.Modules.Reservations.FindMany;
 
 [Authenticate]
 public sealed record FindManyReservationsRequest
-    : ReservationFilter, IRequest<List<FindManyReservationResponse>>;
+    : ReservationFilter, IRequest<List<FindManyReservationsResponse>>;
