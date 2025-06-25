@@ -4,6 +4,9 @@ using Booxer.Domain.Enums;
 
 namespace Booxer.Infrastructure.Persistence.Repository;
 
+public class DatabaseException(string message)
+    : BaseException(message, ExceptionCode.InternalServerError);
+
 public class EntityNotFoundException<TEntity>()
     : BaseException($"{typeof(TEntity).Name} not found.", ExceptionCode.NotFound)
         where TEntity : class;

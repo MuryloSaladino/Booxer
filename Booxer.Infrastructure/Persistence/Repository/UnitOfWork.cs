@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using Booxer.Infrastructure.Persistence.Context;
 using Booxer.Domain.Repository;
-using Booxer.Domain.Exceptions;
 
 namespace Booxer.Infrastructure.Persistence.Repository;
 
@@ -20,12 +19,12 @@ public class UnitOfWork(BooxerContext ctx) : IUnitOfWork
             {
                 2627 or 2601 => new DuplicatedEntityException(sqlEx.Message),
                 547 => new EntityNotFoundException(),
-                _ => new InternalException(),
+                _ => new DatabaseException(sqlEx.Message),
             };
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw new InternalException();
+            throw new DatabaseException(e.Message);
         }
     }
 }
