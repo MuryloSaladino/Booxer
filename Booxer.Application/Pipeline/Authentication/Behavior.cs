@@ -43,10 +43,7 @@ public class AuthenticationBehavior<TRequest, TResponse>(
                     throw new AuthenticationException("Refresh token not provided.");
 
                 var refreshTokenEntity = await refreshTokensRepository
-                    .FindOneByTokenValue(session.RefreshToken, cancellationToken);
-
-                if (refreshTokenEntity.ExpiresAt < DateTime.UtcNow)
-                    throw new AuthenticationException("Expired Refresh token.");
+                    .FindOneValid(session.RefreshToken, cancellationToken);
 
                 if (authAttribute.AdminOnly && !refreshTokenEntity.User.IsAdmin)
                     throw new NotAdminException();

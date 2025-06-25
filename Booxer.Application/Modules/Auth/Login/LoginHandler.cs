@@ -24,10 +24,9 @@ public sealed class LoginHandler(
         if(!encrypter.Matches(user.Password, request.Password)) 
             throw new AuthenticationException("Incorrect password or invalid credentials.");
 
-        var refreshToken = await refreshTokensRepository.FindOneByUserId(user.Id, cancellationToken)
-            ?? RefreshToken.FromUser(user);
-
+        var refreshToken = await refreshTokensRepository.FindOneOrCreate(user, cancellationToken);
         refreshToken.Rotate();
+
         await unitOfWork.Save(cancellationToken);
 
         session.AccessToken = tokenAuthenticator.GenerateToken(TokenPayload.FromUser(user));

@@ -7,18 +7,24 @@ namespace Booxer.Infrastructure.Persistence.Repository.RefreshTokens;
 
 public class RefreshTokensRepository(BooxerContext context) : IRefreshTokensRepository
 {
-    public void Create(RefreshToken refreshToken)
-        => context.Add(refreshToken);
-
-    public async Task<RefreshToken> FindOneByTokenValue(string token, CancellationToken cancellationToken)
+    public async Task<RefreshToken> FindOneValid(string value, CancellationToken cancellationToken)
         => await context.Set<RefreshToken>()
-            .Where(rt => rt.Value == token)
+            .Where(rt => rt.Value == value)
+            .Where(rt => rt.ExpiresAt > DateTime.UtcNow)
             .FirstOrDefaultAsync(cancellationToken)
                 ?? throw new EntityNotFoundException<RefreshToken>();
 
-    public async Task<RefreshToken> FindOneByUserId(Guid userId, CancellationToken cancellationToken)
-        => await context.Set<RefreshToken>()
-            .Where(rt => rt.UserId == userId)
-            .FirstOrDefaultAsync(cancellationToken)
-                ?? throw new EntityNotFoundException<RefreshToken>();
+    public async Task<RefreshToken> FindOneOrCreate(User user, CancellationToken cancellationToken)
+    {
+        var refreshToken = await context.Set<RefreshToken>()
+            .Where(rt => rt.UserId == user.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (refreshToken is null)
+        {
+            refreshToken = RefreshToken.FromUser(user);
+            context.Add(refreshToken);
+        }
+        return refreshToken;
+    }
 }
