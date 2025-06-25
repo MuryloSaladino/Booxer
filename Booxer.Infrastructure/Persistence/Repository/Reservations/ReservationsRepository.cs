@@ -19,13 +19,4 @@ public class ReservationsRepository(BooxerContext context)
 
         return query;
     }
-
-    public Task<List<Reservation>> FindManyByDateRangeAndCategoryId(
-        DateTime start, DateTime end, Guid? categoryId, CancellationToken cancellationToken
-    ) => Context.Set<Reservation>()
-        .Where(r => r.DeletedAt == null)
-        .Where(r => categoryId == null || r.Resource.CategoryId == categoryId)
-        .Where(r => r.StartsAt > start)
-        .Where(r => r.EndsAt < end)
-        .ToListAsync(cancellationToken);
 }
