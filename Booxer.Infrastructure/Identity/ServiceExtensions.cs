@@ -5,7 +5,7 @@ using Booxer.Infrastructure.Identity.Services;
 
 namespace Booxer.Infrastructure.Identity;
 
-public static class IdentityConfiguration
+public static class ServiceExtensions
 {
     public static void ConfigureIdentity(this IServiceCollection services)
     {
