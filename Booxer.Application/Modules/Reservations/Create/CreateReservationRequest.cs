@@ -5,7 +5,7 @@ namespace Booxer.Application.Modules.Reservations.Create;
 
 [Authenticate]
 public sealed record CreateReservationRequest(
-    Guid ReservableId,
+    Guid ResourceId,
     DateTime StartsAt,
     DateTime EndsAt
 ) : IRequest<CreateReservationResponse>;

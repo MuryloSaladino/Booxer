@@ -5,7 +5,7 @@ public sealed record CreateReservationResponse(
     DateTime CreatedAt,
     DateTime UpdatedAt,
     DateTime? DeletedAt,
-    Guid ReservableId,
+    Guid ResourceId,
     Guid ReservedById,
     DateTime StartsAt,
     DateTime EndsAt

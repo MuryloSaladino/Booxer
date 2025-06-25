@@ -11,7 +11,7 @@ public class DeleteReservationHandler(
 {
     public async Task Handle(DeleteReservationRequest request, CancellationToken cancellationToken)
     {
-        var reservation = await reservationsRepository.FindOne(request.ReservationId, cancellationToken);
+        var reservation = await reservationsRepository.FindOne(new() { Id = request.ReservationId }, cancellationToken);
 
         reservationsRepository.Delete(reservation);
 
