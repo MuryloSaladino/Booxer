@@ -8,6 +8,12 @@ using Booxer.Infrastructure.Persistence.Context;
 using Booxer.Infrastructure.Persistence.Repository;
 using Booxer.Infrastructure.Persistence.Repository.RefreshTokens;
 using Booxer.Infrastructure.Persistence.Repository.Users;
+using Booxer.Domain.Repository.Resources;
+using Booxer.Infrastructure.Persistence.Repository.Resources;
+using Booxer.Domain.Repository.Categories;
+using Booxer.Infrastructure.Persistence.Repository.Categories;
+using Booxer.Domain.Repository.Reservations;
+using Booxer.Infrastructure.Persistence.Repository.Reservations;
 
 namespace Booxer.Infrastructure.Persistence;
 
@@ -23,5 +29,8 @@ public static class ServiceExtensions
 
         services.AddScoped<IUsersRepository, UserRepository>();
         services.AddScoped<IRefreshTokensRepository, RefreshTokensRepository>();
+        services.AddScoped<IResourcesRepository, ResourcesRepository>();
+        services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+        services.AddScoped<IReservationsRepository, ReservationsRepository>();
     }
 }
