@@ -12,7 +12,7 @@ public class FindManyResourcesHandler(
     public async Task<List<FindManyResourcesResponse>> Handle(
         FindManyResourcesRequest request, CancellationToken cancellationToken)
     {
-        var resources = await resourcesRepository.FindManyByCategory(request.CategoryId, cancellationToken);
+        var resources = await resourcesRepository.FindMany(request, cancellationToken);
 
         return mapper.Map<List<FindManyResourcesResponse>>(resources);
     }

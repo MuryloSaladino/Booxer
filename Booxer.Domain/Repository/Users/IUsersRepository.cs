@@ -2,7 +2,9 @@ using Booxer.Domain.Entities;
 
 namespace Booxer.Domain.Repository.Users;
 
-public interface IUsersRepository : IBaseRepository<User>
+public record UserFilter : BaseEntityFilter
 {
-    Task<User> FindOneByUsernameOrEmail(string usernameOrEmail, CancellationToken cancellationToken);
+    public string? UsernameOrEmail { get; set; }
 }
+
+public interface IUsersRepository : IBaseRepository<User, UserFilter>;

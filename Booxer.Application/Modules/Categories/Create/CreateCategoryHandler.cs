@@ -7,7 +7,7 @@ using MediatR;
 namespace Booxer.Application.Modules.Categories.Create;
 
 public class CreateCategoryHandler(
-    ICategoryRepository categoryRepository,
+    ICategoriesRepository categoryRepository,
     IUnitOfWork unitOfWork,
     IMapper mapper
 ) : IRequestHandler<CreateCategoryRequest, CreateCategoryResponse>

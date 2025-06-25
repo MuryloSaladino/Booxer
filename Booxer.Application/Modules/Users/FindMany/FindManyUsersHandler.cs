@@ -12,7 +12,7 @@ public sealed class FindManyUsersHandler(
     public async Task<List<FindManyUsersResponse>> Handle(
         FindManyUsersRequest request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.FindMany(cancellationToken);
+        var user = await userRepository.FindMany(request, cancellationToken);
 
         return mapper.Map<List<FindManyUsersResponse>>(user);
     }

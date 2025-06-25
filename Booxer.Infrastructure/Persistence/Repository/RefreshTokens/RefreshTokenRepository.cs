@@ -5,9 +5,7 @@ using Booxer.Infrastructure.Persistence.Context;
 
 namespace Booxer.Infrastructure.Persistence.Repository.RefreshTokens;
 
-public class RefreshTokensRepository(
-    BooxerContext context
-) : IRefreshTokensRepository
+public class RefreshTokensRepository(BooxerContext context) : IRefreshTokensRepository
 {
     public void Create(RefreshToken refreshToken)
         => context.Add(refreshToken);

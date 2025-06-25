@@ -2,7 +2,9 @@ using Booxer.Domain.Entities;
 
 namespace Booxer.Domain.Repository.Resources;
 
-public interface IResourcesRepository : IBaseRepository<Resource>
+public record ResourceFilter : BaseEntityFilter
 {
-    Task<List<Resource>> FindManyByCategory(Guid? categoryId, CancellationToken cancellationToken);
+    public Guid? CategoryId { get; set; }
 }
+
+public interface IResourcesRepository : IBaseRepository<Resource, ResourceFilter>;

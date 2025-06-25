@@ -1,13 +1,15 @@
-using Microsoft.EntityFrameworkCore;
 using Booxer.Domain.Common;
 using Booxer.Domain.Repository;
 using Booxer.Infrastructure.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Booxer.Infrastructure.Persistence.Repository;
 
-public class BaseRepository<TEntity>(
+public class BaseRepository<TEntity, TFilter>(
     BooxerContext context
-) : IBaseRepository<TEntity> where TEntity : BaseEntity
+) : IBaseRepository<TEntity, TFilter> 
+    where TEntity : BaseEntity
+    where TFilter : BaseEntityFilter
 {
     protected BooxerContext Context = context;
 
@@ -28,23 +30,28 @@ public class BaseRepository<TEntity>(
         Context.Update(entity);
     }
 
-    public Task<TEntity?> FindOneOrDefault(Guid id, CancellationToken cancellationToken)
-        => Context.Set<TEntity>()
-            .Where(entity => entity.DeletedAt == null)
-            .Where(entity => entity.Id == id)
-            .FirstOrDefaultAsync(cancellationToken);
+    protected virtual IQueryable<TEntity> FilterQuery(TFilter filter)
+    {
+        var query = Context.Set<TEntity>().AsQueryable();
 
-    public async Task<TEntity> FindOne(Guid id, CancellationToken cancellationToken)
-        => await FindOneOrDefault(id, cancellationToken)
-            ?? throw new EntityNotFoundException<TEntity>();
+        if (filter.Id is Guid id)
+            query = query.Where(e => e.Id == id);
 
-    public Task<List<TEntity>> FindMany(CancellationToken cancellationToken)
-        => Context.Set<TEntity>()
-            .Where(entity => entity.DeletedAt == null)
-            .ToListAsync(cancellationToken);
+        if (!filter.IncludeDeleted)
+            query = query.Where(e => e.DeletedAt == null);
 
-    public Task<bool> Exists(Guid id, CancellationToken cancellationToken)
-        => Context.Set<TEntity>()
-            .Where(entity => entity.Id == id)
-            .AnyAsync(cancellationToken);
+        return query;
+    }
+
+    public Task<TEntity?> FindOneOrDefault(TFilter filter, CancellationToken cancellationToken)
+        => FilterQuery(filter).FirstOrDefaultAsync(cancellationToken);
+
+    public async Task<TEntity> FindOne(TFilter filter, CancellationToken cancellationToken)
+        => await FindOneOrDefault(filter, cancellationToken) ?? throw new EntityNotFoundException<TEntity>();
+
+    public Task<List<TEntity>> FindMany(TFilter filter, CancellationToken cancellationToken)
+        => FilterQuery(filter).ToListAsync(cancellationToken);
+
+    public Task<bool> Exists(TFilter filter, CancellationToken cancellationToken)
+        => FilterQuery(filter).AnyAsync(cancellationToken);
 }

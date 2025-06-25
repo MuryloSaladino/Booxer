@@ -19,8 +19,7 @@ public sealed class LoginHandler(
 {
     public async Task Handle(LoginRequest request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.FindOneByUsernameOrEmail(request.UsernameOrEmail, cancellationToken)
-            ?? throw new EntityNotFoundException<User>();
+        var user = await userRepository.FindOne(new() { UsernameOrEmail = request.UsernameOrEmail }, cancellationToken);
         
         if(!encrypter.Matches(user.Password, request.Password)) 
             throw new AuthenticationException("Incorrect password or invalid credentials.");

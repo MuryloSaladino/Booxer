@@ -14,8 +14,7 @@ public sealed class FindOneUserHandler(
     public async Task<FindOneUserResponse> Handle(
         FindOneUserRequest request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.FindOne(request.UserId, cancellationToken)
-            ?? throw new EntityNotFoundException<User>();
+        var user = await userRepository.FindOne(new() { Id = request.UserId }, cancellationToken);
 
         return mapper.Map<FindOneUserResponse>(user);
     }

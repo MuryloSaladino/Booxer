@@ -12,8 +12,7 @@ public class FindManyReservationsHandler(
     public async Task<List<FindManyReservationResponse>> Handle(
         FindManyReservationsRequest request, CancellationToken cancellationToken)
     {
-        var reservations = await reservationsRepository.FindManyByDateRangeAndCategoryId(
-            request.Start, request.End, request.CategoryId, cancellationToken);
+        var reservations = await reservationsRepository.FindMany(request, cancellationToken);
 
         return mapper.Map<List<FindManyReservationResponse>>(reservations);
     }
