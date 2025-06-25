@@ -11,11 +11,13 @@ public class ReservationsRepository(BooxerContext context)
     protected override IQueryable<Reservation> FilterQuery(ReservationFilter filter)
     {
         var query = base.FilterQuery(filter)
-            .Where(r => r.StartsAt > filter.Start)
-            .Where(r => r.EndsAt < filter.End);
+            .Where(r => r.StartsAt > filter.Start || r.EndsAt < filter.End);
 
         if (filter.CategoryId is Guid categoryId)
             query = query.Where(r => r.Resource.CategoryId == categoryId);
+        
+        if (filter.ResourceId is Guid resourceId)
+            query = query.Where(r => r.ResourceId == resourceId);
 
         return query;
     }

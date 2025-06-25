@@ -1,7 +1,5 @@
 using AutoMapper;
 using MediatR;
-using Booxer.Domain.Entities;
-using Booxer.Domain.Repository;
 using Booxer.Domain.Repository.Users;
 
 namespace Booxer.Application.Modules.Users.FindOne;
