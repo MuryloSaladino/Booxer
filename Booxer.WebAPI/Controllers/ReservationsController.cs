@@ -1,11 +1,11 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Booxer.API.Constants;
+using Booxer.WebAPI.Constants;
 using Booxer.Application.Modules.Reservations.Create;
 using Booxer.Application.Modules.Reservations.FindMany;
 using Booxer.Application.Modules.Reservations.Delete;
 
-namespace Booxer.API.Controllers;
+namespace Booxer.WebAPI.Controllers;
 
 [ApiController, Route(APIRoutes.Reservations)]
 public class ReservationsController(IMediator mediator) : ControllerBase

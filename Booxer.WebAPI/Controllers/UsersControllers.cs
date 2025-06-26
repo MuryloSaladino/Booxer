@@ -1,11 +1,11 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Booxer.API.Constants;
+using Booxer.WebAPI.Constants;
 using Booxer.Application.Modules.Users.Create;
 using Booxer.Application.Modules.Users.FindOne;
 using Booxer.Application.Modules.Users.FindMany;
 
-namespace Booxer.API.Controllers;
+namespace Booxer.WebAPI.Controllers;
 
 [ApiController, Route(APIRoutes.Users)]
 public class UsersController(IMediator mediator) : ControllerBase

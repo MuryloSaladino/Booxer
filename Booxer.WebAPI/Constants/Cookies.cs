@@ -1,4 +1,4 @@
-namespace Booxer.API.Constants;
+namespace Booxer.WebAPI.Constants;
 
 public static class Cookies
 {

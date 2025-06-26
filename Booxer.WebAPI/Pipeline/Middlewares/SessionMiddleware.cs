@@ -1,6 +1,6 @@
-using Booxer.API.Constants;
+using Booxer.WebAPI.Constants;
 
-namespace Booxer.API.Pipeline.Middlewares;
+namespace Booxer.WebAPI.Pipeline.Middlewares;
 
 public class SessionMiddleware(RequestDelegate next)
 {

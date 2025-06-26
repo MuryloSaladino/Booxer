@@ -1,10 +1,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Booxer.API.Constants;
+using Booxer.WebAPI.Constants;
 using Booxer.Application.Modules.Categories.Create;
 using Booxer.Application.Modules.Categories.FindMany;
 
-namespace Booxer.API.Controllers;
+namespace Booxer.WebAPI.Controllers;
 
 [ApiController, Route(APIRoutes.Categories)]
 public class CategoriesController(IMediator mediator) : ControllerBase

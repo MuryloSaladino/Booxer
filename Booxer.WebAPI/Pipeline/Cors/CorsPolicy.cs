@@ -1,4 +1,4 @@
-namespace Booxer.API.Pipeline.Cors;
+namespace Booxer.WebAPI.Pipeline.Cors;
 
 public static class CorsPolicyExtensions
 {

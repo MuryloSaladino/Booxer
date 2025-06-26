@@ -1,10 +1,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Booxer.API.Constants;
+using Booxer.WebAPI.Constants;
 using Booxer.Application.Modules.Resources.Create;
 using Booxer.Application.Modules.Resources.FindMany;
 
-namespace Booxer.API.Controllers;
+namespace Booxer.WebAPI.Controllers;
 
 [ApiController, Route(APIRoutes.Resources)]
 public class ResourcesController(IMediator mediator) : ControllerBase

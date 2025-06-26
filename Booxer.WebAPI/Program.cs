@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
 using dotenv.net;
-using Booxer.API.Pipeline.Cors;
-using Booxer.API.Pipeline.Handlers;
-using Booxer.API.Pipeline.Middlewares;
+using Booxer.WebAPI.Pipeline.Cors;
+using Booxer.WebAPI.Pipeline.Handlers;
+using Booxer.WebAPI.Pipeline.Middlewares;
 using Booxer.Application;
 using Booxer.Infrastructure.Identity;
 using Booxer.Infrastructure.Persistence;

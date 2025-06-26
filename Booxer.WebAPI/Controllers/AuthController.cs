@@ -1,11 +1,11 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Booxer.API.Constants;
+using Booxer.WebAPI.Constants;
 using Booxer.Application.Modules.Auth.Login;
 using Booxer.Application.Modules.Auth.Logout;
 using Booxer.Application.Modules.Auth.ReadSelfDetails;
 
-namespace Booxer.API.Controllers;
+namespace Booxer.WebAPI.Controllers;
 
 [ApiController, Route(APIRoutes.Auth)]
 public class AuthController(IMediator mediator) : ControllerBase
