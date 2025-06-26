@@ -8,6 +8,6 @@ public class FindManyResourcesMapper : Profile
     public FindManyResourcesMapper()
     {
         CreateMap<Resource, FindManyResourcesResponse>()
-            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+            .ForCtorParam("Category", opt => opt.MapFrom(src => src.Category.Name));
     }
 }
