@@ -13,36 +13,41 @@ public class SessionMiddleware(RequestDelegate next)
         session.AccessToken = requestAccessToken;
         session.RefreshToken = requestRefreshToken;
 
+        context.Response.OnStarting(() =>
+        {
+            if (session.AccessToken != requestAccessToken)
+                context.UpdateToken(Cookies.AccessToken, session.AccessToken, DateTime.UtcNow.AddMinutes(15));
+
+            if (session.RefreshToken != requestRefreshToken)
+                context.UpdateToken(Cookies.RefreshToken, session.RefreshToken, DateTime.UtcNow.AddDays(30));
+
+            return Task.CompletedTask;
+        });
+
         await next(context);
-
-        if (session.AccessToken != requestAccessToken)
-            context.Response.Cookies.UpdateToken(Cookies.AccessToken, session.AccessToken, DateTime.UtcNow.AddMinutes(15));
-
-        if (session.RefreshToken != requestRefreshToken)
-            context.Response.Cookies.UpdateToken(Cookies.RefreshToken, session.RefreshToken, DateTime.UtcNow.AddDays(30));
     }
 }
 
 
 public static class CookiesExtensions
 {
-    public static void UpdateToken(this IResponseCookies cookies, string cookie, string? value, DateTime ExpiresAt)
+    public static void UpdateToken(this HttpContext context, string cookie, string? value, DateTime ExpiresAt)
     {
         if (value is string token)
         {
-            cookies.Append(cookie, token, new CookieOptions
+            context.Response.Cookies.Append(cookie, token, new CookieOptions
             {
                 HttpOnly = true,
-                Secure = Environment.GetEnvironmentVariable("ENV") == "prod",
+                Secure = context.Request.IsHttps,
                 SameSite = SameSiteMode.Strict,
                 Expires = ExpiresAt,
             });
         }
         else
         {
-            cookies.Append(cookie, string.Empty, new CookieOptions
+            context.Response.Cookies.Append(cookie, string.Empty, new CookieOptions
             {
-                Expires = DateTime.Now.AddDays(-1),
+                Expires = DateTime.UtcNow.AddDays(-1),
             });
         }
     }
