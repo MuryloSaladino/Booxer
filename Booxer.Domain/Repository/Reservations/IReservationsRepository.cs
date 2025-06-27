@@ -10,8 +10,4 @@ public record ReservationFilter : BaseEntityFilter
     public DateTime? End { get; set; }
 }
 
-public interface IReservationsRepository : IBaseRepository<Reservation, ReservationFilter>
-{
-    public Task<bool> ExistsInRange(
-        Guid resourceId, (DateTime Start, DateTime End) range, CancellationToken cancellationToken);
-}
+public interface IReservationsRepository : IBaseRepository<Reservation, ReservationFilter>;
