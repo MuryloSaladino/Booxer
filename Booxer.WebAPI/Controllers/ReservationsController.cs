@@ -1,9 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Booxer.WebAPI.Constants;
-using Booxer.Application.Modules.Reservations.Create;
-using Booxer.Application.Modules.Reservations.FindMany;
-using Booxer.Application.Modules.Reservations.Delete;
+using Booxer.Application.Reservations.Commands.Create;
+using Booxer.Application.Reservations.Commands.FindMany;
+using Booxer.Application.Reservations.Commands.Delete;
 
 namespace Booxer.WebAPI.Controllers;
 

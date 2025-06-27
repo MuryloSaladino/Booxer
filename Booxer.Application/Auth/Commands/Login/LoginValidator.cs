@@ -1,0 +1,15 @@
+using FluentValidation;
+
+namespace Booxer.Application.Auth.Commands.Login;
+
+public class LoginValidator : AbstractValidator<LoginRequest>
+{
+    public LoginValidator()
+    {
+        RuleFor(l => l.UsernameOrEmail)
+            .NotEmpty();
+
+        RuleFor(l => l.Password)
+            .NotEmpty();
+    }
+}

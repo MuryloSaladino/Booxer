@@ -1,9 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Booxer.WebAPI.Constants;
-using Booxer.Application.Modules.Auth.Login;
-using Booxer.Application.Modules.Auth.Logout;
-using Booxer.Application.Modules.Auth.ReadSelfDetails;
+using Booxer.Application.Auth.Commands.Login;
+using Booxer.Application.Auth.Commands.ReadSelfDetails;
+using Booxer.Application.Auth.Commands.Logout;
 
 namespace Booxer.WebAPI.Controllers;
 
