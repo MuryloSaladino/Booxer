@@ -23,6 +23,6 @@ public class ReservationsRepository(BooxerContext context)
         if (filter.ResourceId is Guid resourceId)
             query = query.Where(r => r.ResourceId == resourceId);
 
-        return query;
+        return query.OrderBy(r => r.StartsAt);
     }
 } 
