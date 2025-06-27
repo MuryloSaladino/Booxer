@@ -1,1 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+@import "primeng/resources/themes/aura-light-noir/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+@layer reset-primeng, primeng;
+
+@layer reset-primeng {
+    button, input {
+        box-shadow: none;
+        padding: 0.6rem 1.2rem;
+    }
+    input {
+        width: 20rem;
+    }
+}
