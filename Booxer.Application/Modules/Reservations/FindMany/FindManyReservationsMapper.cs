@@ -8,6 +8,6 @@ public class FindManyReservationsMapper : Profile
     public FindManyReservationsMapper()
     {
         CreateMap<Reservation, FindManyReservationsResponse>()
-            .ForMember(dest => dest.ReservedBy, opt => opt.MapFrom(src => src.ReservedBy.Username));
+            .ForCtorParam("ReservedBy", opt => opt.MapFrom(src => src.ReservedBy.Username));
     }
 }
