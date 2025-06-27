@@ -2,7 +2,7 @@ using System.Reflection;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Booxer.Application.Common.Behaviors;
+using Booxer.Application.Behaviors;
 
 namespace Booxer.Application;
 

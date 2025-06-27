@@ -1,8 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Booxer.WebAPI.Constants;
-using Booxer.Application.Categories.Commands.Create;
-using Booxer.Application.Categories.Commands.FindMany;
+using Booxer.Application.Commands.Categories.Create;
+using Booxer.Application.Commands.Categories.FindMany;
 
 namespace Booxer.WebAPI.Controllers;
 
