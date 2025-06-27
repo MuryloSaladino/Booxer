@@ -10,12 +10,7 @@ public class CreateReservationValidator : AbstractValidator<CreateReservationReq
     {
         RuleFor(r => r)
             .Must(r => r.EndsAt > r.StartsAt)
-            .MustAsync(async (r, cancellationToken) => await reservationsRepository
-                .Exists(new()
-                {
-                    ResourceId = r.ResourceId,
-                    Start = r.StartsAt,
-                    End = r.EndsAt,
-                }, cancellationToken));
+            .MustAsync(async (r, cancellationToken) => !await reservationsRepository
+                .ExistsInRange(r.ResourceId, (Start: r.StartsAt, End: r.EndsAt), cancellationToken));
     }
 }
