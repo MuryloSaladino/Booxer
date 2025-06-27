@@ -1,0 +1,19 @@
+.container {
+    height: 80vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form {
+    width: 95%;
+    max-width: 20rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+.form p-button {
+    align-self: flex-end;
+}
