@@ -31,12 +31,26 @@ export class LayoutComponent implements OnInit {
     ngOnInit() {
         this.menuItems = [
             {
-                label: "Logout",
-                icon: "pi pi-sign-out",
-                command: async () => {
-                    await this.auth.logout();
-                    this.router.navigate([AppRoutes.LOGIN]);
-                }
+                label: `Username: ${this.auth.user()?.username}`,
+                items: [
+                    { separator: true },
+                    {
+                        label: "Profile",
+                        icon: "pi pi-user",
+                    },
+                    {
+                        label: "Settings",
+                        icon: "pi pi-cog",
+                    },
+                    {
+                        label: "Logout",
+                        icon: "pi pi-sign-out",
+                        command: async () => {
+                            await this.auth.logout();
+                            this.router.navigate([AppRoutes.LOGIN]);
+                        }
+                    },
+                ]
             },
         ]
     }
