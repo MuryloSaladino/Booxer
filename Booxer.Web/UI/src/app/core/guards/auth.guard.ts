@@ -8,5 +8,13 @@ export const authGuard = async () => {
 	const auth = inject(AuthService);
 	const router = inject(Router);
 
-	return Boolean(auth.user()) || router.parseUrl("/" + AppRoutes.LOGIN);
+    if(auth.user())
+        return true;
+
+    try {
+        await auth.fetchUser();
+        return true;
+    } catch {
+        return router.parseUrl("/" + AppRoutes.LOGIN);
+    }
 };
