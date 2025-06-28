@@ -5,6 +5,7 @@ import { Category } from "../../../../core/types/category.entity";
 import { ButtonModule } from "primeng/button";
 import { AuthService } from "../../../../core/services/auth.service";
 import { CreateResourceComponent } from "../create-resource/create-resource.component";
+import { RouterModule } from "@angular/router";
 
 @Component({
     selector: "resource-list",
@@ -14,6 +15,7 @@ import { CreateResourceComponent } from "../create-resource/create-resource.comp
     imports: [
         ButtonModule,
         CreateResourceComponent,
+        RouterModule,
     ],
 })
 export class ResourceListComponent implements OnInit {

@@ -5,6 +5,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { authGuard } from './core/guards/auth.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LayoutComponent } from './shared/layout/layout.component';
+import { ReservationComponent } from './pages/reservation/reservation.component';
 
 export const routes: Routes = [
     {
@@ -29,6 +30,10 @@ export const routes: Routes = [
 				path: AppRoutes.DASHBOARD,
                 component: DashboardComponent,
 			},
+            {
+                path: AppRoutes.RESERVATION + '/:resourceId',
+                component: ReservationComponent,
+            },
 		]
 	},
 	{

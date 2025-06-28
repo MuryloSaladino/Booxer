@@ -10,7 +10,7 @@
         <ul class="resource-list">
             @for (resource of resources(); track $index) {
                 <li>
-                    <p-button>
+                    <p-button [routerLink]="'/reservation/' + resource.id">
                         {{ resource.name }}
                     </p-button>
                 </li>

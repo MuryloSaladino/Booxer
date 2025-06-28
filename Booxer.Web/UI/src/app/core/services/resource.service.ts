@@ -20,4 +20,9 @@ export class ResourceService {
         const response = await api.get<Resource[]>("/resources" + new Query(filter));
         return response.data;
     }
+
+    async getById(resourceId: string) {
+        const response = await api.get<Resource>("/resources/" + resourceId);
+        return response.data;
+    }
 }

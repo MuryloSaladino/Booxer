@@ -6,6 +6,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { animate, style, transition, trigger } from "@angular/animations";
 import { ButtonModule } from "primeng/button";
+import { RouterModule } from "@angular/router";
 
 @Component({
     selector: 'search-container',
@@ -17,14 +18,7 @@ import { ButtonModule } from "primeng/button";
         IconFieldModule,
         InputIconModule,
         ButtonModule,
-    ],
-    animations: [
-        trigger('fadeInBlur', [
-            transition(':enter', [
-                style({ opacity: 0, filter: 'blur(5px)' }),
-                animate('800ms ease-out', style({ opacity: 1, filter: 'blur(0)' })),
-            ]),
-        ]),
+        RouterModule,
     ],
 })
 export class SearchContainerComponent {
