@@ -15,5 +15,9 @@
     }
     input {
         width: 20rem;
+        max-width: 100%;
+    }
+    ul, ol {
+        list-style: none;
     }
 }
