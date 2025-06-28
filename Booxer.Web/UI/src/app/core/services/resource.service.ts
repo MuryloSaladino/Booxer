@@ -5,6 +5,7 @@ import { Query } from "../utils/query";
 
 export interface ResourceFilter {
     categoryId?: string;
+    search?: string;
 }
 
 @Injectable({ providedIn: "root" })

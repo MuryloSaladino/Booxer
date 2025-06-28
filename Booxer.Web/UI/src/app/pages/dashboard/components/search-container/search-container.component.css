@@ -1,0 +1,24 @@
+.container {
+    min-height: 40vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.search-input {
+    width: 30rem;
+}
+.search-input-container {
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.resource-list {
+    display: flex;
+    gap: 1rem;
+}
