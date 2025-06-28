@@ -1,0 +1,14 @@
+<p-button (onClick)="visible = true" icon="pi pi-plus"/>
+
+<p-dialog header="Create {{category.name}} Resource" [modal]="true" [(visible)]="visible">
+    <form class="dialog-container" [formGroup]="form" (submit)="create()">
+        <fieldset>
+            <label for="name">Resource Name</label>
+            <input pInputText id="name" autocomplete="off" formControlName="name"/>
+        </fieldset>
+        <div class="button-group">
+            <p-button label="Cancel" severity="danger" (onClick)="visible = false" />
+            <p-button label="Create" severity="info" type="submit" />
+        </div>
+    </form>
+</p-dialog>

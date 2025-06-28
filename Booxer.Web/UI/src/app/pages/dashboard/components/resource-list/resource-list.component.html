@@ -1,0 +1,13 @@
+<div class="container">
+    <h4>{{ category.name }}</h4>
+    <ul class="resource-list">
+        @for (resource of resources(); track $index) {
+            <p-button size="large">
+                {{ resource.name }}
+            </p-button>
+        }
+        @if (auth.user()?.isAdmin) {
+            <create-resource [category]="category" (onCreation)="appendResource($event)"/>
+        }
+    </ul>
+</div>
