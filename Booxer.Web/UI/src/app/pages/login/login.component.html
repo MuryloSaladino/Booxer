@@ -1,21 +1,23 @@
 <div class="container">
     <form [formGroup]="form" (ngSubmit)="submit()" class="form">
         <booxer-logo/>
-        <p-floatLabel>
+        <fieldset>
+            <label for="usernameOrEmail">Username or Password</label>
             <input
+                id="usernameOrEmail"
                 formControlName="usernameOrEmail"
                 pInputText
             />
-            <label>Username or Password</label>
-        </p-floatLabel>
-        <p-floatLabel>
+        </fieldset>
+        <fieldset>
+            <label for="password">Password</label>
             <p-password
+                inputId="password"
                 formControlName="password"
                 [feedback]="false"
                 [toggleMask]="true"
             />
-            <label>Password</label>
-        </p-floatLabel>
+        </fieldset>
         <p-button type="submit" [disabled]="form.invalid" rightIcon="login" class="self-end">Login</p-button>
     </form>
 </div>

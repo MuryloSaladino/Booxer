@@ -5,7 +5,6 @@ import { AuthService } from "../../core/services/auth.service";
 import { AppRoutes } from "../../core/constants/app-routes";
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
-import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { LogoComponent } from "../../shared/logo/logo.component";
 
@@ -18,7 +17,6 @@ import { LogoComponent } from "../../shared/logo/logo.component";
         ReactiveFormsModule,
         ButtonModule,
         PasswordModule,
-        FloatLabelModule,
         InputTextModule,
         LogoComponent,
     ],
