@@ -20,6 +20,12 @@
         Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+/* ====== Reset ======= */
+h1, h2, h3, h4, h5, h6, span, p {
+    margin: 0;
+    padding: 0;
+}
+
 /* ====== Inputs ======= */
 fieldset {
     border: none;
@@ -31,7 +37,6 @@ fieldset {
 h1, h2, h3, h4, h5, h6 {
     font-family: inherit;
     font-weight: 700;
-    margin: 0;
 }
 
 h1 { font-size: 2.5rem; }
