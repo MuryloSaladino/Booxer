@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Booxer.Web.API.Constants;
 using Booxer.Application.Commands.Resources.Create;
 using Booxer.Application.Commands.Resources.FindMany;
+using Booxer.Application.Commands.Resources.FindOne;
 
 namespace Booxer.Web.API.Controllers;
 
@@ -22,6 +23,14 @@ public class ResourcesController(IMediator mediator) : ControllerBase
         [FromQuery] FindManyResourcesRequest request, CancellationToken cancellationToken)
     {
         var response = await mediator.Send(request, cancellationToken);
+        return Ok(response);
+    }
+
+    [HttpGet, Route("{resourceId}")]
+    public async Task<ActionResult<List<FindOneResourceResponse>>> FindOne(
+        [FromRoute] Guid resourceId, CancellationToken cancellationToken)
+    {
+        var response = await mediator.Send(new FindOneResourceRequest(resourceId), cancellationToken);
         return Ok(response);
     }
 }
