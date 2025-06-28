@@ -2,6 +2,8 @@ import { Component, inject, signal } from "@angular/core";
 import { CategoryService } from "../../core/services/category.service";
 import { Category } from "../../core/types/category.entity";
 import { ResourceListComponent } from "./components/resource-list/resource-list.component";
+import { SearchContainerComponent } from "./components/search-container/search-container.component";
+import { DividerModule } from 'primeng/divider';
 
 @Component({
     selector: 'dashboard',
@@ -10,6 +12,8 @@ import { ResourceListComponent } from "./components/resource-list/resource-list.
     standalone: true,
     imports: [
         ResourceListComponent,
+        SearchContainerComponent,
+        DividerModule,
     ]
 })
 export class DashboardComponent {

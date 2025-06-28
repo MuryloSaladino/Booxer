@@ -1,7 +1,9 @@
 <div class="container">
+    <search-container/>
 
-
+    <p-divider/>
     @for (category of categories(); track $index) {
         <resource-list [category]="category"/>
+        <p-divider/>
     }
 </div>
