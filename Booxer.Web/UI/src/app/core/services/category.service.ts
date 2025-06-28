@@ -1,6 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Category, CategoryCreation } from "../types/category.entity";
 import { api } from "../api";
+import { Query } from "../utils/query";
+
+export interface CategoryFilter {
+    matchName?: string;
+}
 
 @Injectable({ providedIn: "root" })
 export class CategoryService {
@@ -10,8 +15,8 @@ export class CategoryService {
         return response.data;
 	}
 
-	async getAll(search?: string) {
-		const response = await api.get<Category[]>("/categories" + search);
+	async getAll(filter: CategoryFilter = {}) {
+		const response = await api.get<Category[]>("/categories" + new Query(filter));
         return response.data;
 	}
 }

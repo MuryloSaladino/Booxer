@@ -15,8 +15,8 @@ export class UserService {
         return response.data;
 	}
 
-	async getAll(filter?: any) {
-		const response = await api.get<User[]>("/users" + filter);
+	async getAll() {
+		const response = await api.get<User[]>("/users");
         return response.data;
 	}
 }
