@@ -1,6 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { User } from '../types/user.entity';
-import { api } from '../api';
+import { ApiService, RequestOptions } from './api.service';
 
 export interface LoginRequest {
     usernameOrEmail: string;
@@ -10,6 +10,7 @@ export interface LoginRequest {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
+    readonly api = inject(ApiService);
 	readonly user = signal<User | null>(null);
 
     constructor() {
@@ -18,18 +19,18 @@ export class AuthService {
         } catch {}
     }
 
-	async login(request: LoginRequest) {
-		await api.post('/auth/login', request);
+	async login(request: LoginRequest, options?: RequestOptions) {
+		await this.api.post('/auth/login', request, options);
 		await this.fetchUser();
 	}
 
-	async fetchUser() {
-        const response = await api.get<User>('/auth/user');
+	async fetchUser(options?: RequestOptions) {
+        const response = await this.api.get<User>('/auth/user', options);
         this.user.set(response.data);
 	}
 
-	async logout() {
-		await api.delete('/auth/logout');
+	async logout(options?: RequestOptions) {
+		await this.api.delete('/auth/logout', options);
 		this.user.set(null);
 	}
 }

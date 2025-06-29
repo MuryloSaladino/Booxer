@@ -7,6 +7,8 @@ import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { LogoComponent } from "../../shared/logo/logo.component";
+import { ToastModule } from "primeng/toast";
+import { MessageService } from "primeng/api";
 
 @Component({
 	selector: "login",
@@ -19,6 +21,7 @@ import { LogoComponent } from "../../shared/logo/logo.component";
         PasswordModule,
         InputTextModule,
         LogoComponent,
+        ToastModule,
     ],
 })
 export class LoginComponent {
@@ -37,6 +40,8 @@ export class LoginComponent {
 	}
 
 	async submit() {
-		await this.auth.login(this.form.value);
+		await this.auth.login(this.form.value, {
+            errorFeedback: true,
+        });
 	}
 }

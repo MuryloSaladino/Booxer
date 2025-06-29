@@ -1,22 +1,24 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { User, UserCreation } from "../types/user.entity";
-import { api } from "../api";
+import { ApiService, RequestOptions } from "./api.service";
 
 @Injectable({ providedIn: "root" })
 export class UserService {
 
-	async create(userCreation: UserCreation) {
-		const response = await api.post<User>("/users", userCreation);
+    readonly api = inject(ApiService);
+
+	async create(userCreation: UserCreation, options?: RequestOptions) {
+		const response = await this.api.post<User>("/users", userCreation, options);
         return response.data;
 	}
 
-	async get(userId: string) {
-		const response = await api.get<User>("/users/" + userId);
+	async get(userId: string, options?: RequestOptions) {
+		const response = await this.api.get<User>("/users/" + userId, options);
         return response.data;
 	}
 
-	async getAll() {
-		const response = await api.get<User[]>("/users");
+	async getAll(options?: RequestOptions) {
+		const response = await this.api.get<User[]>("/users", options);
         return response.data;
 	}
 }

@@ -7,6 +7,7 @@ import { LogoComponent } from "../logo/logo.component";
 import { ButtonModule } from "primeng/button";
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from "primeng/api";
+import { ToastModule } from 'primeng/toast';
 
 @Component({
     selector: "app-layout",
@@ -19,6 +20,7 @@ import { MenuItem } from "primeng/api";
         LogoComponent,
         ButtonModule,
         MenuModule,
+        ToastModule,
     ],
 })
 export class LayoutComponent implements OnInit {

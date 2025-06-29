@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { Resource, ResourceCreation } from "../types/resource.entity";
-import { api } from "../api";
 import { Query } from "../utils/query";
+import { ApiService, RequestOptions } from "./api.service";
 
 export interface ResourceFilter {
     categoryId?: string;
@@ -11,18 +11,20 @@ export interface ResourceFilter {
 @Injectable({ providedIn: "root" })
 export class ResourceService {
 
-    async create(resourceCreation: ResourceCreation) {
-        const response = await api.post<Resource>("/resources", resourceCreation);
+    readonly api = inject(ApiService);
+
+    async create(resourceCreation: ResourceCreation, options?: RequestOptions) {
+        const response = await this.api.post<Resource>("/resources", resourceCreation, options);
         return response.data;
     }
 
-    async getAll(filter: ResourceFilter = {}) {
-        const response = await api.get<Resource[]>("/resources" + new Query(filter));
+    async getAll(filter: ResourceFilter = {}, options?: RequestOptions) {
+        const response = await this.api.get<Resource[]>("/resources" + new Query(filter), options);
         return response.data;
     }
 
-    async getById(resourceId: string) {
-        const response = await api.get<Resource>("/resources/" + resourceId);
+    async getById(resourceId: string, options?: RequestOptions) {
+        const response = await this.api.get<Resource>("/resources/" + resourceId, options);
         return response.data;
     }
 }
