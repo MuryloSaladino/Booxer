@@ -81,7 +81,10 @@ export class ReservationComponent implements OnInit {
                     startsAt: this.range[0],
                     endsAt: this.range[1],
                     resourceId: this.resource()!.id,
-                })
+                }, { errorFeedback: true, successFeedback: {
+                    message: "Reservation confirmed!",
+                    details: `${this.resource()?.name} reserved for ${dayjs(this.range[0]).format("DD/MM/YYYY [at] HH:mm")}`
+                }})
                 this.router.navigate([AppRoutes.DASHBOARD]);
             },
         });

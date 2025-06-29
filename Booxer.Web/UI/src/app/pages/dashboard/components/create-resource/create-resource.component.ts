@@ -41,7 +41,10 @@ export class CreateResourceComponent {
         const resource = await this.resourceService.create({
             ...this.form.value,
             categoryId: this.category.id,
-        });
+        }, { errorFeedback: true, successFeedback: {
+            message: "Success!",
+            details: `New resource created for ${this.category.name} category.`
+        }});
         this.onCreation.emit(resource);
         this.visible = false;
     }
