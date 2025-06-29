@@ -31,6 +31,10 @@ fieldset {
     border: none;
     padding: 0;
     margin: 0;
+
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
 }
 
 /* ===== Headings ===== */

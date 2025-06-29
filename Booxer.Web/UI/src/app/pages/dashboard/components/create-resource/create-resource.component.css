@@ -3,10 +3,6 @@
     flex-direction: column;
     gap: 1rem;
 }
-.dialog-container fieldset {
-    display: flex;
-    flex-direction: column;
-}
 
 .button-group {
     display: flex;
