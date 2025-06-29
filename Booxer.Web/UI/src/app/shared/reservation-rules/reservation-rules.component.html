@@ -1,0 +1,13 @@
+<span (click)="op.toggle($event)" class="rule-btn">Booxer Reservation Rules</span>
+<p-overlayPanel #op>
+    <div class="rules">
+        <h5>Reservation rules:</h5>
+        <ol>
+            <li><span class="rule-title">Return It as You Found It</span> - Clean up and reset the resource after use.</li>
+            <li><span class="rule-title">Respect Time Slots</span> - Arrive and finish on time to avoid overlapping bookings.</li>
+            <li><span class="rule-title">Confirm Before Canceling</span> - Late cancellations waste availability—notify early if plans change.</li>
+            <li><span class="rule-title">Check Before Extending</span> - Don't assume you can stay longer; verify availability first.</li>
+            <li><span class="rule-title">Log Issues Immediately</span> - Report damage or malfunctions so the next user isn't affected.</li>
+        </ol>
+    </div>
+</p-overlayPanel>
