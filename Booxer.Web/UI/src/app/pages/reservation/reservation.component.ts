@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from "@angular/core";
+import { Component, computed, inject, OnInit, signal } from "@angular/core";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { ResourceService } from "../../core/services/resource.service";
 import { CalendarModule } from 'primeng/calendar';
@@ -8,12 +8,13 @@ import { ReservationService } from "../../core/services/reservation.service";
 import { Reservation } from "../../core/types/reservation.entity";
 import { CommonModule } from "@angular/common";
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmationService } from "primeng/api";
+import { ConfirmationService, Message } from "primeng/api";
 import { AppRoutes } from "../../core/constants/app-routes";
 import { MessagesModule } from 'primeng/messages';
 import { AuthService } from "../../core/services/auth.service";
 import { DividerModule } from "primeng/divider";
 import { ReservationRulesComponent } from "../../shared/reservation-rules/reservation-rules.component";
+import dayjs from "dayjs";
 
 @Component({
     selector: 'reservation',
@@ -37,11 +38,20 @@ export class ReservationComponent implements OnInit {
     readonly route = inject(ActivatedRoute);
     readonly router = inject(Router);
     readonly auth = inject(AuthService);
+
     readonly resourceService = inject(ResourceService);
-    readonly reservationService = inject(ReservationService);
-    readonly confirmation = inject(ConfirmationService);
     readonly resource = signal<Resource | null>(null);
+
+    readonly reservationService = inject(ReservationService);
     readonly reservations = signal<Reservation[]>([]);
+
+    readonly reservationMessages = computed<Message[]>(() => this.reservations().map(r => ({
+        severity: "warn",
+        detail: `Reservation for ${r.reservedBy}
+                ${dayjs(r.startsAt).format("DD/MM/YYYY HH:mm")} - ${dayjs(r.endsAt).format("DD/MM/YYYY HH:mm")}`,
+        closable: false,
+    })));
+    readonly confirmation = inject(ConfirmationService);
 
     range: [Date, Date] = this.getRangeStarterValue();
 
@@ -66,8 +76,6 @@ export class ReservationComponent implements OnInit {
             header: 'Review Reservation Details',
             acceptLabel: "Confirm",
             rejectLabel: "Cancel",
-            acceptButtonStyleClass: "accept",
-            rejectButtonStyleClass: "reject",
             accept: async () => {
                 await this.reservationService.create({
                     startsAt: this.range[0],
@@ -81,9 +89,12 @@ export class ReservationComponent implements OnInit {
 
     private getRangeStarterValue(): [Date, Date] {
         const start = new Date();
+        start.setMinutes(0);
         start.setDate(start.getDate() + 1);
+
         const end = new Date(start);
         end.setDate(start.getDate() + 1);
+
         return [start, end];
     }
 }
