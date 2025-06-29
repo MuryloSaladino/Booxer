@@ -1,14 +1,19 @@
-import { Component, computed, effect, inject, OnInit, signal } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { Component, inject, OnInit, signal } from "@angular/core";
+import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { ResourceService } from "../../core/services/resource.service";
 import { CalendarModule } from 'primeng/calendar';
-import { FormBuilder, FormGroup, FormsModule } from "@angular/forms";
+import { FormsModule } from "@angular/forms";
 import { Resource } from "../../core/types/resource.entity";
 import { ReservationService } from "../../core/services/reservation.service";
 import { Reservation } from "../../core/types/reservation.entity";
 import { CommonModule } from "@angular/common";
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from "primeng/api";
+import { AppRoutes } from "../../core/constants/app-routes";
+import { MessagesModule } from 'primeng/messages';
+import { AuthService } from "../../core/services/auth.service";
+import { DividerModule } from "primeng/divider";
+import { ReservationRulesComponent } from "../../shared/reservation-rules/reservation-rules.component";
 
 @Component({
     selector: 'reservation',
@@ -20,19 +25,25 @@ import { ConfirmationService } from "primeng/api";
         FormsModule,
         CommonModule,
         ConfirmDialogModule,
+        RouterModule,
+        MessagesModule,
+        DividerModule,
+        ReservationRulesComponent,
     ],
     providers: [ConfirmationService]
 })
 export class ReservationComponent implements OnInit {
 
     readonly route = inject(ActivatedRoute);
+    readonly router = inject(Router);
+    readonly auth = inject(AuthService);
     readonly resourceService = inject(ResourceService);
     readonly reservationService = inject(ReservationService);
     readonly confirmation = inject(ConfirmationService);
     readonly resource = signal<Resource | null>(null);
     readonly reservations = signal<Reservation[]>([]);
 
-    range: [Date, Date] = this.getCurrentWeekRange();
+    range: [Date, Date] = this.getRangeStarterValue();
 
     async ngOnInit() {
         const resourceId = this.route.snapshot.paramMap.get("resourceId");
@@ -53,7 +64,7 @@ export class ReservationComponent implements OnInit {
     async reserve() {
         this.confirmation.confirm({
             header: 'Review Reservation Details',
-            acceptLabel: "Confirm Reservation",
+            acceptLabel: "Confirm",
             rejectLabel: "Cancel",
             acceptButtonStyleClass: "accept",
             rejectButtonStyleClass: "reject",
@@ -63,22 +74,16 @@ export class ReservationComponent implements OnInit {
                     endsAt: this.range[1],
                     resourceId: this.resource()!.id,
                 })
+                this.router.navigate([AppRoutes.DASHBOARD]);
             },
         });
     }
 
-    private getCurrentWeekRange(): [Date, Date] {
-        const now = new Date();
-        const dayOfWeek = now.getDay();
-
-        const start = new Date(now);
-        start.setDate(now.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
-        start.setHours(0, 0, 0, 0);
-
+    private getRangeStarterValue(): [Date, Date] {
+        const start = new Date();
+        start.setDate(start.getDate() + 1);
         const end = new Date(start);
-        end.setDate(start.getDate() + 6);
-        end.setHours(23, 59, 59, 999);
-
+        end.setDate(start.getDate() + 1);
         return [start, end];
     }
 }

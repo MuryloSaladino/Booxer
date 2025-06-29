@@ -1,70 +1,68 @@
 <div class="container">
-    <div>
-        <h3>Check availability</h3>
-
-        <p-calendar
-            [(ngModel)]="range"
-            selectionMode="range"
-            [readonlyInput]="true"
-            [showTime]="true"
-            [inline]="true"
-            (ngModelChange)="fetchReservationsInRange($event)"
-        />
-
-        @if(reservations().length > 0) {
-            <h6>Found reservations:</h6>
-            <ul class="reservation-list">
-                @for (reservation of reservations(); track $index) {
-                    <li>
-                        <p>{{ reservation.startsAt | date:'dd/MM/yyyy HH:mm' }} - {{ reservation.endsAt | date:'dd/MM/yyyy HH:mm' }}</p>
-                        <p>Reserved by: {{ reservation.reservedBy }}</p>
-                    </li>
-                }
-            </ul>
-        }
+    <div class="container-header">
+        <p-button icon="pi pi-chevron-left" class="back-arrow" [routerLink]="['/dashboard']" severity="secondary"/>
+        <h3>Make a reservation for <span class="text-primary">{{ resource()?.name }}</span></h3>
+        <span></span>
     </div>
 
-    <div>
-        <h3>Reservation for <span class="text-primary">{{ resource()?.name }}</span></h3>
-
-        <fieldset class="fieldset">
-            <label for="start-date">Starts At</label>
+    <div class="reservation">
+        <div>
             <p-calendar
-                id="start-date"
-                [(ngModel)]="range[0]"
+                [(ngModel)]="range"
+                selectionMode="range"
                 [readonlyInput]="true"
                 [showTime]="true"
+                [inline]="true"
                 (ngModelChange)="fetchReservationsInRange($event)"
             />
-        </fieldset>
-        <fieldset class="fieldset">
-            <label for="end-date">Ends At</label>
-            <p-calendar
-                id="end-date"
-                [(ngModel)]="range[1]"
-                [readonlyInput]="true"
-                [showTime]="true"
-                (ngModelChange)="fetchReservationsInRange($event)"
-            />
-        </fieldset>
-        <p-button severity="success" (onClick)="reserve()" >Confirm Reservation</p-button>
+        </div>
 
-        <p-confirmDialog>
-            <ng-template pTemplate="message" let-message>
-                <div class="confirmation-rules">
-                    <h5>Reservation for {{ resource()?.name }}</h5>
-                    <p>{{ range[0] | date:'dd/MM/yyyy HH:mm' }} - {{ range[1] | date:'dd/MM/yyyy HH:mm' }}</p>
-
-                    <h5>Remember the rules:</h5>
-                    <ol>
-                        <li>Return It as You Found It – Clean up and reset the resource after use.</li>
-                        <li>Respect Time Slots – Arrive and finish on time to avoid overlapping bookings.</li>
-                        <li>Confirm Before Canceling – Late cancellations waste availability—notify early if plans change.</li>
-                        <li>Check Before Extending – Don’t assume you can stay longer; verify availability first.</li>
-                        <li>Log Issues Immediately – Report damage or malfunctions so the next user isn’t affected.</li>
-                    </ol>
+        <div>
+            @if(reservations().length > 0) {
+                <p-messages
+                    [value]="[{ severity: 'error', detail: 'Date not available' }]"
+                    [enableService]="false"
+                    [closable]="false"
+                />
+                <ul class="reservation-list">
+                    @for (reservation of reservations(); track $index) {
+                        <li>
+                            <p>{{ reservation.startsAt | date:'dd/MM/yyyy HH:mm' }} - {{ reservation.endsAt | date:'dd/MM/yyyy HH:mm' }}</p>
+                            <p>Reserved by: {{ reservation.reservedBy }}</p>
+                        </li>
+                    }
+                </ul>
+            } @else {
+                <div class="reservation-details">
+                    <p-divider/>
+                    <div><span>Resource:</span> <span class="text-primary">{{ resource()?.name }}</span></div>
+                    <p-divider/>
+                    <div><span>Pickup:</span> {{ range[0] | date:'dd/MM/yyyy HH:mm' }}</div>
+                    <p-divider/>
+                    <div><span>Return:</span> {{ range[1] | date:'dd/MM/yyyy HH:mm' }}</div>
+                    <p-divider/>
                 </div>
-            </ng-template>
-        </p-confirmDialog>
+                <p>By confirming the reservation, you agree to the <reservation-rules/></p>
+                <p-button severity="success" (onClick)="reserve()">Confirm Reservation</p-button>
+
+                <p-confirmDialog>
+                    <ng-template pTemplate="message" let-message>
+                        <div class="confirmation-rules">
+                            <div class="reservation-details">
+                                <p-divider/>
+                                <div><span>Resource:</span> <span class="text-primary">{{ resource()?.name }}</span></div>
+                                <p-divider/>
+                                <div><span>Pickup:</span> {{ range[0] | date:'dd/MM/yyyy HH:mm' }}</div>
+                                <p-divider/>
+                                <div><span>Return:</span> {{ range[1] | date:'dd/MM/yyyy HH:mm' }}</div>
+                                <p-divider/>
+                            </div>
+
+                            <p>By confirming the reservation, you agree to the <reservation-rules/></p>
+                        </div>
+                    </ng-template>
+                </p-confirmDialog>
+            }
+        </div>
     </div>
 </div>
