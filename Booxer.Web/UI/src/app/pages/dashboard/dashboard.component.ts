@@ -1,4 +1,4 @@
-import { Component, inject, signal } from "@angular/core";
+import { Component, inject, OnInit, signal } from "@angular/core";
 import { CategoryService } from "../../core/services/category.service";
 import { Category } from "../../core/types/category.entity";
 import { ResourceListComponent } from "./components/resource-list/resource-list.component";
@@ -18,17 +18,17 @@ import { CreateCategoryComponent } from "./components/create-category/create-cat
         CreateCategoryComponent,
     ]
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
 
     readonly categoryService = inject(CategoryService);
     readonly categories = signal<Category[]>([]);
 
-    constructor() {
-        this.updateCategories();
-    }
-
-    async updateCategories() {
+    async ngOnInit() {
         const response = await this.categoryService.getAll();
         this.categories.set(response);
+    }
+
+    appendCategory(category: Category) {
+        this.categories.update(prev => [...prev, category]);
     }
 }

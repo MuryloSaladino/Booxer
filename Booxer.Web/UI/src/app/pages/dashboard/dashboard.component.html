@@ -6,5 +6,5 @@
         <resource-list [category]="category"/>
         <p-divider/>
     }
-    <create-category (onCreation)="updateCategories()" />
+    <create-category (onCreation)="appendCategory($event)" />
 </div>
