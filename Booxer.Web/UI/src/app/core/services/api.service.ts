@@ -2,6 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { environment } from "../../../environments/environment";
 import { MessageService } from "primeng/api";
+import { serializeRequestData } from "../utils/serializer";
 
 export type RequestMethod = "post" | "get" | "delete" | "patch" | "put";
 
@@ -39,7 +40,8 @@ export class ApiService {
         options?: RequestOptions
     ) {
         try {
-            const response = await this.axios[method]<TResponse>(url, data, options);
+            const body = serializeRequestData(data);
+            const response = await this.axios[method]<TResponse>(url, body, options);
 
             if(options?.successFeedback) {
                 this.messages.add({

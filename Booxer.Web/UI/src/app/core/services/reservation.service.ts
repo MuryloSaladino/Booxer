@@ -6,6 +6,7 @@ import { ApiService, RequestOptions } from "./api.service";
 export interface ReservationFilter {
     categoryId?: string;
     resourceId?: string;
+    reservedById?: string;
     start?: Date;
     end?: Date;
 }
