@@ -6,6 +6,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LayoutComponent } from './shared/layout/layout.component';
 import { ReservationComponent } from './pages/reservation/reservation.component';
+import { CalendarComponent } from './pages/calendar/calendar.component';
 
 export const routes: Routes = [
     {
@@ -34,6 +35,10 @@ export const routes: Routes = [
                 path: AppRoutes.RESERVATION + '/:resourceId',
                 component: ReservationComponent,
             },
+            {
+                path: AppRoutes.CALENDAR,
+                component: CalendarComponent,
+            }
 		]
 	},
 	{

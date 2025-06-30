@@ -1,0 +1,31 @@
+<div class="container">
+    <p-button icon="pi pi-chevron-left" class="back-arrow" [routerLink]="['/dashboard']" severity="secondary"/>
+    
+    <div class="calendar-container">
+        <mwl-calendar-week-view
+            [viewDate]="date()"
+            [events]="events()"
+            [hourSegments]="1"
+            (eventClicked)="onEventClick($event.event)"
+            [dayStartHour]="8"
+            [dayEndHour]="18"
+        />
+    </div>
+
+    <p-dialog
+        modal
+        header="Reservation Details"
+        [(visible)]="openDetails"
+        [style]="{ width: '400px' }"
+        [draggable]="false"
+    >
+        @if(openDetails) {
+            <div class="reservation-details">
+                <reservation-details [reservation]="selectedEvent()!.meta!"/>
+                <p-button severity="danger" (onClick)="cancelCurrentReservation()">Cancel Reservation</p-button>
+            </div>
+        }
+    </p-dialog>
+
+    <p-confirmDialog/>
+</div>
