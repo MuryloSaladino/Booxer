@@ -14,6 +14,7 @@ using Booxer.Domain.Repository.Categories;
 using Booxer.Infrastructure.Persistence.Repository.Categories;
 using Booxer.Domain.Repository.Reservations;
 using Booxer.Infrastructure.Persistence.Repository.Reservations;
+using Booxer.Infrastructure.Persistence.Seeding;
 
 namespace Booxer.Infrastructure.Persistence;
 
@@ -21,12 +22,18 @@ public static class ServiceExtensions
 {
     public static void ConfigurePersistence(this IServiceCollection services)
     {
-        var dbUrl = Environment.GetEnvironmentVariable("DATABASE_URL")
-            ?? throw new InvalidConfigurationException("Missing \"DATABASE_URL\" environment variable");
+        services.AddDbContext<BooxerContext>(opt =>
+        {
+            var dbUrl = Environment.GetEnvironmentVariable("DATABASE_URL")
+                ?? throw new InvalidConfigurationException("Missing \"DATABASE_URL\" environment variable");
 
-        services.AddDbContext<BooxerContext>(opt => opt.UseSqlServer(dbUrl));
+            opt.UseSqlServer(dbUrl);
+
+            if(Environment.GetEnvironmentVariable("ENV") == "dev")
+                opt.UseAsyncSeeding(async (ctx, b, cancellationToken) => await ctx.UseDemoSeeding());
+        });
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-
         services.AddScoped<IUsersRepository, UserRepository>();
         services.AddScoped<IRefreshTokensRepository, RefreshTokensRepository>();
         services.AddScoped<IResourcesRepository, ResourcesRepository>();

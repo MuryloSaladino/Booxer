@@ -38,9 +38,7 @@ var app = builder.Build();
 var serviceScope = app.Services.CreateScope();
 var dataContext = serviceScope.ServiceProvider.GetService<BooxerContext>()
     ?? throw new InvalidOperationException("Failed to resolve BooxerContext from service provider.");
-
-dataContext.Database.EnsureCreated();
-await dataContext.SeedData();
+await dataContext.Database.EnsureCreatedAsync();
 
 app.UseMiddleware<SessionMiddleware>();
 app.UseSwagger();
