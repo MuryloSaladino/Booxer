@@ -14,6 +14,9 @@ import { MessagesModule } from 'primeng/messages';
 import { AuthService } from "../../core/services/auth.service";
 import { DividerModule } from "primeng/divider";
 import { ReservationRulesComponent } from "../../shared/reservation-rules/reservation-rules.component";
+import { ReservationDetailsComponent } from "../../shared/reservation-details/reservation-details.component";
+import { isDateInHourRange, mergeDateAndTime } from "../../core/utils/date";
+import { ReservationTipComponent } from "../../shared/reservation-tip/reservation-tip.component";
 import dayjs from "dayjs";
 
 @Component({
@@ -30,8 +33,9 @@ import dayjs from "dayjs";
         MessagesModule,
         DividerModule,
         ReservationRulesComponent,
+        ReservationDetailsComponent,
+        ReservationTipComponent,
     ],
-    providers: [ConfirmationService]
 })
 export class ReservationComponent implements OnInit {
 
@@ -45,27 +49,38 @@ export class ReservationComponent implements OnInit {
     readonly reservationService = inject(ReservationService);
     readonly reservations = signal<Reservation[]>([]);
 
-    readonly reservationMessages = computed<Message[]>(() => this.reservations().map(r => ({
-        severity: "warn",
-        detail: `Reservation for ${r.reservedBy}
-                ${dayjs(r.startsAt).format("DD/MM/YYYY HH:mm")} - ${dayjs(r.endsAt).format("DD/MM/YYYY HH:mm")}`,
-        closable: false,
-    })));
     readonly confirmation = inject(ConfirmationService);
 
-    range: [Date, Date] = this.getRangeStarterValue();
+    reservationDay = dayjs().add(1, "day").toDate();
+    startsAt = dayjs().add(1, "day").set("hour", 8).startOf("hour").toDate();
+    endsAt = dayjs().add(1, "day").set("hour", 12).startOf("hour").toDate();
 
     async ngOnInit() {
         const resourceId = this.route.snapshot.paramMap.get("resourceId");
         const response = await this.resourceService.getById(resourceId!);
         this.resource.set(response);
+        await this.validate();
     }
 
-    async fetchReservationsInRange(range: Date[]) {
-        if(!range[0] || !range[1]) return;
+    async validate() {
+        if(dayjs(this.reservationDay).isBefore(dayjs())) {
+            this.reservationDay = new Date();
+        }
+
+        if(!isDateInHourRange(this.startsAt, 8, 18))
+            this.startsAt = dayjs(this.startsAt).set("hour", 8).toDate();
+        if(!isDateInHourRange(this.endsAt, 8, 18))
+            this.endsAt = dayjs(this.endsAt).set("hour", 18).toDate();
+
+        const duration = this.endsAt.getHours() - this.startsAt.getHours();
+        if(duration > 8 || duration < 0) {
+            this.startsAt = dayjs(this.startsAt).set("hour", 8).toDate();
+            this.endsAt = dayjs(this.endsAt).set("hour", 12).toDate();
+        }
+
         const response = await this.reservationService.getAll({
-            start: range[0],
-            end: range[1],
+            start: mergeDateAndTime(this.reservationDay, this.startsAt),
+            end: mergeDateAndTime(this.reservationDay, this.endsAt),
             resourceId: this.resource()!.id,
         });
         this.reservations.set(response);
@@ -78,26 +93,15 @@ export class ReservationComponent implements OnInit {
             rejectLabel: "Cancel",
             accept: async () => {
                 await this.reservationService.create({
-                    startsAt: this.range[0],
-                    endsAt: this.range[1],
+                    startsAt: mergeDateAndTime(this.reservationDay, this.startsAt),
+                    endsAt: mergeDateAndTime(this.reservationDay, this.endsAt),
                     resourceId: this.resource()!.id,
                 }, { errorFeedback: true, successFeedback: {
                     message: "Reservation confirmed!",
-                    details: `${this.resource()?.name} reserved for ${dayjs(this.range[0]).format("DD/MM/YYYY [at] HH:mm")}`
+                    details: `${this.resource()?.name} reserved for ${dayjs(this.reservationDay).format("DD/MM/YYYY [at] HH:mm")}`
                 }})
                 this.router.navigate([AppRoutes.DASHBOARD]);
             },
         });
-    }
-
-    private getRangeStarterValue(): [Date, Date] {
-        const start = new Date();
-        start.setMinutes(0);
-        start.setDate(start.getDate() + 1);
-
-        const end = new Date(start);
-        end.setDate(start.getDate() + 1);
-
-        return [start, end];
     }
 }
