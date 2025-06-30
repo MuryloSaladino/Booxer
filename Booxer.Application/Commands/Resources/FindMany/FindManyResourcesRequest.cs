@@ -4,6 +4,6 @@ using MediatR;
 
 namespace Booxer.Application.Commands.Resources.FindMany;
 
-[Authenticate(AdminOnly = true)]
+[Authenticate]
 public sealed record FindManyResourcesRequest
     : ResourceFilter, IRequest<List<FindManyResourcesResponse>>;
