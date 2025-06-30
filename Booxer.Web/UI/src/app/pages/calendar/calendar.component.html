@@ -1,6 +1,10 @@
 <div class="container">
-    <p-button icon="pi pi-chevron-left" class="back-arrow" [routerLink]="['/dashboard']" severity="secondary"/>
-    
+    <div class="container-header">
+        <p-button icon="pi pi-chevron-left" class="back-arrow" [routerLink]="['/dashboard']" severity="secondary"/>
+        <h3>Your <span class="text-primary">scheduled</span> reservations - {{ weekStart() | date:"yyyy" }}</h3>
+        <span></span>
+    </div>
+
     <div class="calendar-container">
         <mwl-calendar-week-view
             [viewDate]="date()"
@@ -10,6 +14,12 @@
             [dayStartHour]="8"
             [dayEndHour]="18"
         />
+    </div>
+
+    <div class="pagination">
+        <p-button severity="secondary" [rounded]="true" icon="pi pi-chevron-left" (onClick)="prevWeek()"></p-button>
+        <p>{{ weekStart() | date:"dd/MM" }} - {{ weekEnd() | date:"dd/MM" }}</p>
+        <p-button severity="secondary" [rounded]="true" icon="pi pi-chevron-right" (onClick)="nextWeek()"></p-button>
     </div>
 
     <p-dialog
