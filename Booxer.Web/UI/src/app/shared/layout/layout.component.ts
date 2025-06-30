@@ -35,6 +35,11 @@ export class LayoutComponent implements OnInit {
             {
                 label: `Username: ${this.auth.user()?.username}`,
                 items: [
+                    {
+                        label: "My Reservations",
+                        icon: "pi pi-calendar",
+                        routerLink: "/calendar",
+                    },
                     { separator: true },
                     {
                         label: "Profile",
