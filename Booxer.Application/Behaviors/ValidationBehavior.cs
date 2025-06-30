@@ -20,22 +20,13 @@ public sealed class ValidationBehavior<TRequest, TResponse>(
             validators.Select(v => v.ValidateAsync(context, cancellationToken))
         );
 
-        var failures = validationResults
+        var error = validationResults
             .SelectMany(x => x.Errors)
             .Where(x => x != null)
-            .ToList();
+            .FirstOrDefault();
 
-        if (failures.Count != 0)
-        {
-            var errorsDict = failures
-                .GroupBy(e => e.PropertyName)
-                .ToDictionary(
-                    g => g.Key,
-                    g => string.Join(", ", g.Select(e => e.ErrorMessage))
-                );
-
-            throw new RequestValidationException(errorsDict);
-        }
+        if (error is not null)
+            throw new RequestValidationException(error.ErrorMessage);
 
         return await next();
     }
