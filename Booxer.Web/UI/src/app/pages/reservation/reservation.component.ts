@@ -1,7 +1,7 @@
-import { Component, computed, inject, OnInit, signal } from "@angular/core";
+import { Component, inject, OnInit, signal } from "@angular/core";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { ResourceService } from "../../core/services/resource.service";
-import { CalendarModule } from 'primeng/calendar';
+import { CalendarModule as NGCalendarModule } from 'primeng/calendar';
 import { FormsModule } from "@angular/forms";
 import { Resource } from "../../core/types/resource.entity";
 import { ReservationService } from "../../core/services/reservation.service";
@@ -18,6 +18,7 @@ import { ReservationDetailsComponent } from "../../shared/reservation-details/re
 import { isDateInHourRange, mergeDateAndTime } from "../../core/utils/date";
 import { ReservationTipComponent } from "../../shared/reservation-tip/reservation-tip.component";
 import dayjs from "dayjs";
+import { CalendarEvent, CalendarModule } from "angular-calendar";
 
 @Component({
     selector: 'reservation',
@@ -25,6 +26,7 @@ import dayjs from "dayjs";
     styleUrl: './reservation.component.css',
     standalone: true,
     imports: [
+        NGCalendarModule,
         CalendarModule,
         FormsModule,
         CommonModule,
@@ -48,8 +50,10 @@ export class ReservationComponent implements OnInit {
 
     readonly reservationService = inject(ReservationService);
     readonly reservations = signal<Reservation[]>([]);
+    readonly reservationHistory = signal<CalendarEvent<Reservation>[]>([]);
 
     readonly confirmation = inject(ConfirmationService);
+    readonly invalid = signal(false);
 
     reservationDay = dayjs().add(1, "day").toDate();
     startsAt = dayjs().add(1, "day").set("hour", 8).startOf("hour").toDate();
@@ -60,23 +64,11 @@ export class ReservationComponent implements OnInit {
         const response = await this.resourceService.getById(resourceId!);
         this.resource.set(response);
         await this.validate();
+        await this.updateHistory();
     }
 
     async validate() {
-        if(dayjs(this.reservationDay).isBefore(dayjs())) {
-            this.reservationDay = new Date();
-        }
-
-        if(!isDateInHourRange(this.startsAt, 8, 18))
-            this.startsAt = dayjs(this.startsAt).set("hour", 8).toDate();
-        if(!isDateInHourRange(this.endsAt, 8, 18))
-            this.endsAt = dayjs(this.endsAt).set("hour", 18).toDate();
-
         const duration = this.endsAt.getHours() - this.startsAt.getHours();
-        if(duration > 8 || duration < 0) {
-            this.startsAt = dayjs(this.startsAt).set("hour", 8).toDate();
-            this.endsAt = dayjs(this.endsAt).set("hour", 12).toDate();
-        }
 
         const response = await this.reservationService.getAll({
             start: mergeDateAndTime(this.reservationDay, this.startsAt),
@@ -84,6 +76,16 @@ export class ReservationComponent implements OnInit {
             resourceId: this.resource()!.id,
         });
         this.reservations.set(response);
+
+        this.invalid.set(
+            dayjs(this.reservationDay).isBefore(dayjs())
+            || !isDateInHourRange(this.startsAt, 8, 18)
+            || !isDateInHourRange(this.endsAt, 8, 18)
+            || (duration > 8 || duration < 0)
+            || response.length > 0
+        )
+
+        await this.updateHistory();
     }
 
     async reserve() {
@@ -103,5 +105,20 @@ export class ReservationComponent implements OnInit {
                 this.router.navigate([AppRoutes.DASHBOARD]);
             },
         });
+    }
+
+    async updateHistory() {
+        if(this.resource()) {
+            const history = await this.reservationService.getAll({
+                start: dayjs(this.reservationDay).startOf("week").toDate(),
+                end: dayjs(this.reservationDay).endOf("week").toDate(),
+                resourceId: this.resource()!.id
+            });
+            this.reservationHistory.set(history.map(r => ({
+                title: `${r.reservedBy} (${new Date(r.startsAt).getHours()}h - ${new Date(r.endsAt).getHours()}h)`,
+                start: new Date(r.startsAt),
+                end: new Date(r.endsAt),
+            })))
+        }
     }
 }

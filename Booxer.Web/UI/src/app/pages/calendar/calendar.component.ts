@@ -48,7 +48,7 @@ export class CalendarComponent {
             this.events.set(reservations.map(r => ({
                 start: new Date(r.startsAt),
                 end: new Date(r.endsAt),
-                title: r.resource.name,
+                title: `${r.resource.name} (${new Date(r.startsAt).getHours()}h - ${new Date(r.endsAt).getHours()}h)`,
                 meta: r,
             })));
         });
