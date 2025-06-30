@@ -6,6 +6,7 @@ public record ReservationFilter : BaseEntityFilter
 {
     public Guid? CategoryId { get; set; }
     public Guid? ResourceId { get; set; }
+    public Guid? ReservedById { get; set; }
     public DateTime? Start { get; set; }
     public DateTime? End { get; set; }
 }

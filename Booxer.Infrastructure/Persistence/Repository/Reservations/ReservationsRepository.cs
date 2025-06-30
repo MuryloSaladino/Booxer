@@ -12,13 +12,13 @@ public class ReservationsRepository(BooxerContext context)
         var query = base.FilterQuery(filter);
 
         if(filter.Start != null && filter.End != null)
-            query = query.Where(r =>
-                (r.StartsAt < filter.End && r.StartsAt >= filter.Start) ||
-                (r.EndsAt <= filter.End && r.EndsAt > filter.Start)
-            );
+            query = query.Where(r => r.StartsAt < filter.End && r.EndsAt > filter.Start);
 
         if (filter.CategoryId is Guid categoryId)
             query = query.Where(r => r.Resource.CategoryId == categoryId);
+
+        if (filter.ReservedById is Guid reservedById)
+            query = query.Where(r => r.ReservedById == reservedById);
 
         if (filter.ResourceId is Guid resourceId)
             query = query.Where(r => r.ResourceId == resourceId);
