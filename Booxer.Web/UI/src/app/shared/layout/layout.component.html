@@ -3,10 +3,15 @@
 <header class="header">
     <booxer-logo/>
 
-    <div>
+    <nav>
+        <ul>
+            <li><a [routerLink]="['/dashboard']">Home</a></li>
+            <li><a [routerLink]="['/calendar']">My Reservations</a></li>
+        </ul>
+
         <p-menu #menu [model]="menuItems" [popup]="true" />
         <p-button (onClick)="menu.toggle($event)" icon="pi pi-user" [rounded]="true"/>
-    </div>
+    </nav>
 </header>
 
 <main class="main">
