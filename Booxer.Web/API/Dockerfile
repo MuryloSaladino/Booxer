@@ -5,7 +5,6 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Then copy each project
 COPY ["Booxer.Web/API/", "Booxer.Web/API/"]
 COPY ["Booxer.Infrastructure/", "Booxer.Infrastructure/"]
 COPY ["Booxer.Application/", "Booxer.Application/"]

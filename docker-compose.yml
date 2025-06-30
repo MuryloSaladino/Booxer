@@ -1,10 +1,3 @@
-networks:
-  booxer-net:
-    driver: bridge
-
-volumes:
-  sql_data:
-
 services:
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -18,7 +11,7 @@ services:
     volumes:
       - sql_data:/var/opt/mssql
     networks:
-      - booxer-net
+      - booxer_net
 
   backend:
     build:
@@ -28,18 +21,13 @@ services:
       - "8080:8080"
     environment:
       - ENV=dev
-      - DATABASE_URL=Server=db;Database=BooxerDb;User Id=sa;Password=YourStrong!Pass123
+      - DATABASE_URL=Server=db;Database=BooxerDb;User Id=sa;Password=YourStrong!Pass123;TrustServerCertificate=true;Encrypt=true;
       - JWT_SECRET_KEY=demosecretkey204398572304958723409857230948572309485723094857234
-      - CORS_ORIGINS="http://localhost:4200,http://localhost:5173,http://localhost:3000" 
+      - CORS_ORIGINS=http://localhost:4200
     depends_on:
       - db
-    command: >
-      bash -c "
-        echo 'Waiting for SQL Server to be ready...';
-        /wait-for-it.sh db:1433 -- echo 'SQL Server is up, running migrations...';
-        dotnet run --urls=http://0.0.0.0:5000"
     networks:
-      - booxer-net
+      - booxer_net
 
   frontend:
     build:
@@ -47,8 +35,16 @@ services:
       dockerfile: Booxer.Web/UI/Dockerfile
     ports:
       - "4200:4200"
-    depends_on:
-      - backend
     environment:
       - CHOKIDAR_USEPOLLING=true
-    command: "npm start"
+    volumes:
+      - ./Booxer.Web/UI:/app
+      - /app/node_modules
+
+
+networks:
+  booxer_net:
+    driver: bridge
+
+volumes:
+  sql_data:
