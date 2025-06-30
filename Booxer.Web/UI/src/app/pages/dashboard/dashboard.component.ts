@@ -4,6 +4,7 @@ import { Category } from "../../core/types/category.entity";
 import { ResourceListComponent } from "./components/resource-list/resource-list.component";
 import { SearchContainerComponent } from "./components/search-container/search-container.component";
 import { DividerModule } from 'primeng/divider';
+import { CreateCategoryComponent } from "./components/create-category/create-category.component";
 
 @Component({
     selector: 'dashboard',
@@ -14,6 +15,7 @@ import { DividerModule } from 'primeng/divider';
         ResourceListComponent,
         SearchContainerComponent,
         DividerModule,
+        CreateCategoryComponent,
     ]
 })
 export class DashboardComponent {

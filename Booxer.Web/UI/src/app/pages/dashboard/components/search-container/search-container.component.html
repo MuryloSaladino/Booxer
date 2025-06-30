@@ -2,7 +2,7 @@
     <h1 class="text-center">What are you looking to <span class="text-primary">reserve</span> today?</h1>
 
     <div class="search-input-container">
-        <input (change)="updateResources($event)" pInputText placeholder="Search for resource, category..." class="search-input" />
+        <input (input)="updateResources($event)" pInputText placeholder="Search for resource, category..." class="search-input" />
         <p-button icon="pi pi-search" />
     </div>
 

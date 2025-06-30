@@ -20,5 +20,14 @@
 
 .resource-list {
     display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
+}
+.resource-list > li {
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }

@@ -1,4 +1,4 @@
-<p-button (onClick)="visible = true" icon="pi pi-plus"/>
+<p-button (onClick)="visible = true" icon="pi pi-plus" [rounded]="true"/>
 
 <p-dialog header="Create {{category.name}} Resource" [modal]="true" [(visible)]="visible">
     <form class="dialog-container" [formGroup]="form" (submit)="create()">
