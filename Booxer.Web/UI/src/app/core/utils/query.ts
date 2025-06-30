@@ -1,9 +1,11 @@
+import { serializeRequestData } from "./serializer";
+
 export class Query {
 
     readonly params: object;
 
     constructor(params: object) {
-        this.params = params;
+        this.params = serializeRequestData(params);
     }
 
     toString() {
