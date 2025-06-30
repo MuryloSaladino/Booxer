@@ -1,5 +1,8 @@
 .tip-btn {
     padding: 0.1rem;
+    border-radius: 100%;
+    cursor: pointer;
+    color: rgb(153, 151, 13);
 }
 
 .tips {
