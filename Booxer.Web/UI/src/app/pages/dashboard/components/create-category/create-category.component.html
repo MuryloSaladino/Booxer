@@ -1,0 +1,16 @@
+<p-button (onClick)="visible = true" icon="pi pi-plus" [style]="{ width: '100%' }" severity="secondary">
+    Create Category
+</p-button>
+
+<p-dialog header="Create new category" [modal]="true" [(visible)]="visible">
+    <form class="dialog-container" [formGroup]="form" (submit)="create()">
+        <fieldset>
+            <label for="name">Category Name</label>
+            <input pInputText id="name" autocomplete="off" formControlName="name"/>
+        </fieldset>
+        <div class="button-group">
+            <p-button label="Cancel" severity="danger" (onClick)="visible = false" />
+            <p-button label="Create" type="submit" />
+        </div>
+    </form>
+</p-dialog>
