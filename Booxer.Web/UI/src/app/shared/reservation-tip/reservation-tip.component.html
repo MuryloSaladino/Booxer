@@ -1,0 +1,10 @@
+<p-button (click)="op.toggle($event)" icon="pi pi-question-circle" severity="secondary" [rounded]="true" class="tip-btn"/>
+<p-overlayPanel #op>
+    <div class="tips">
+        <h5>Reservation Hours:</h5>
+        <ol>
+            <li><span class="tip-title">Max. durantion</span> - Reservations can take up to 8 hours maximum.</li>
+            <li><span class="tip-title">Allowed time</span> - Must be between 08:00 and 18:00</li>
+        </ol>
+    </div>
+</p-overlayPanel>
